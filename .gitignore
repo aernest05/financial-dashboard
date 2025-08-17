@@ -1,0 +1,9 @@
+venv
+data
+tempCodeRunnerFile.py
+**/__pycache__/
+sql_query.py
+*.db
+*.ipynb
+api_pull.py
+.venv
