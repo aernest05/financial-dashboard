@@ -1,9 +1,13 @@
 import streamlit as st
-import sqlite3
 import pandas as pd
 from util.helpers import *
 from util import query
 import plotly.graph_objects as go
+
+st.set_page_config(
+    page_title="Macroeconomics", # The page title, shown in the browser tab.
+    layout="wide", # How the page content should be laid out.
+)
 
 def get_latest(series_id, name):
     db_data = query.read_macro_db_indicator(series_id)

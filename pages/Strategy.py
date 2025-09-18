@@ -1,9 +1,12 @@
 import streamlit as st
-import pandas as pd
-import sqlite3
 import plotly.graph_objects as go
-from datetime import datetime, timedelta
 import numpy as np
+from util import query
+
+st.set_page_config(
+    page_title="Strategies", # The page title, shown in the browser tab.
+    layout="wide", # How the page content should be laid out.
+)
 
 st.title("Strategy Tester")
 
@@ -12,6 +15,7 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     ticker = st.text_input("Enter stock ticker:", value="BBCA")
+    ticker+='.JK'
 
 with col2:
     ma_short = st.number_input("Short MA Period", min_value=1, value=5)
@@ -19,14 +23,7 @@ with col2:
 with col3:
     ma_long = st.number_input("Long MA Period", min_value=1, value=20)
 
-# Get data
-conn = sqlite3.connect('financial_data.db')
-df = pd.read_sql(f"""
-    SELECT date, close FROM stocks 
-    WHERE ticker = ? 
-    ORDER BY date ASC
-""", conn, params=(f'{ticker}.JK',))
-conn.close()
+df = query.read_stock_database(ticker)
 
 if not df.empty:
     # Calculate moving averages
@@ -46,7 +43,6 @@ if not df.empty:
     df['Cum_Market_Returns'] = (1 + df['Returns']).cumprod()
     df['Cum_Strategy_Returns'] = (1 + df['Strategy_Returns']).cumprod()
 
-    st.write(df)
     
     # Plotting
     fig = go.Figure()

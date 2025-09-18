@@ -1,13 +1,12 @@
 import streamlit as st
 import pandas as pd
-import sqlite3
 from util.helpers import *
 from util import query
 import plotly.graph_objects as go
 from datetime import datetime, timedelta
 
 st.set_page_config(
-    page_title="Commodities", # The page title, shown in the browser tab.
+    page_title="Stock Price", # The page title, shown in the browser tab.
     layout="wide", # How the page content should be laid out.
 )
 st.title("Price Viewer")
@@ -77,9 +76,6 @@ if period == "Max":
     start_date = None
 else:
     start_date = period_dict[period].strftime('%Y-%m-%d')
-
-conn = sqlite3.connect('financial_data.db')
-cursor = conn.cursor()
 
 db_data = query.read_stock_database(ticker)
 
