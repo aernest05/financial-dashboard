@@ -1,12 +1,12 @@
 import streamlit as st
 import sqlite3
 import pandas as pd
-from utiliy.util import *
+from util.helpers import *
+from util import query
 import plotly.graph_objects as go
 
-
-def get_latest(conn,series_id, name):
-    db_data = read_macro_db_indicator(conn,series_id)
+def get_latest(series_id, name):
+    db_data = query.read_macro_db_indicator(series_id)
     latest_data = db_data.iloc[0]
     latest_value = latest_data.loc['value']
     latest_date = latest_data.loc['start_date']
@@ -18,7 +18,6 @@ def get_latest(conn,series_id, name):
             "series_id": series_id,
             'announcement_date': latest_date_announcement
         }
-
 
 indicators = [
     {"series_id": "FEDFUNDS", "name": "Federal Funds Rate"},
@@ -33,10 +32,10 @@ st.set_page_config(layout="wide")
 st.title("📊 U.S. Economic Dashboard")
 st.markdown("Latest macroeconomic indicators from FRED.")
 
-with sqlite3.connect('financial_data.db') as conn:
-    data = [get_latest(conn,ind["series_id"], ind["name"]) for ind in indicators]
-    print(data)
-# st.write(read_macro_db(conn,indicator))
+for indicator in indicators:
+    series_id = indicator['series_id']
+    db_data = query
+    data = [get_latest(ind["series_id"], ind["name"]) for ind in indicators]
 
 cols = st.columns(3) 
 for i, metric in enumerate(data):
@@ -46,10 +45,5 @@ for i, metric in enumerate(data):
             value= f"{metric['value']:.2f}{'%' if abs(metric['value']) < 100 else ''}",
             help=f"FRED Series: {metric['series_id']}\n\nAnnounced: {metric['announcement_date']}"
         )
-        # # Optional: Mini trend chart
-        # trend_data = fred.get_series(metric["series_id"]).tail(12)
-        # fig = px.line(trend_data, title=f"{metric['name']} Trend")
-        # st.plotly_chart(fig, use_container_width=True)
-
-# Add a disclaimer
+        
 st.caption("Source: Federal Reserve Economic Data (FRED) | Updated daily")

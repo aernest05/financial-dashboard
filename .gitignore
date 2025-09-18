@@ -7,3 +7,4 @@ sql_query.py
 *.ipynb
 api_pull.py
 .venv
+.env

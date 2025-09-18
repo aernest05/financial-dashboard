@@ -5,9 +5,7 @@ Streamlit dashboard tracking key US economic indicators with analytical insights
 
 ## Features
 - Real-time FRED API data
-- Recession probability analysis
 - Interactive visualizations
-- Policy simulation tools
 
 ## Installation
 ```bash

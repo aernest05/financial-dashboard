@@ -1,13 +1,25 @@
 import streamlit as st
 
-st.set_page_config(
-    page_title="Macro",  # This changes the browser tab title
-    layout="wide"
+# --- PAGE SETUP ---
+page_price = st.Page(
+    "pages/Price Viewer.py",
+    title="Stock Market",# from Material Design by Google
+    default=True,
 )
-st.sidebar.header("My Sidebar Header")  # Smaller than title but still prominent
 
-# Sidebar content
-st.sidebar.button("Click me")
-st.sidebar.selectbox("Choose an option", ["A", "B", "C"])
+page_strategy = st.Page(
+    "pages/Strategy.py",
+    title="Strategy", # from Material Design by Google
+)
 
-st.title("Welcome to My Streamlit App")
+
+page_financials = st.Page(
+    "pages/Macro.py",
+    title="Macro", # from https://fonts.google.com/icons
+)
+
+pg = st.navigation(pages=[page_price,page_strategy,page_financials])
+
+
+# --- RUN NAVIGATION ---
+pg.run()
